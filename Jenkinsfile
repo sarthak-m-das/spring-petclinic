@@ -1,12 +1,25 @@
 pipeline {
     agent any
     stages {
-        // stage('Workspace Cleanup') {
+        // stage('Unit Tests') {
         //     steps {
-        //         cleanWs()
+        //         sh './mvnw test -Dcheckstyle.skip=true'
         //     }
         // }
         
+        // stage('SonarQube Tests') {
+        //     environment {
+        //         scannerHome = tool 'SonarQube'
+        //     }
+        //     steps {
+        //         withSonarQubeEnv('SonarQube') {
+        //             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=spring-petclinic -Dsonar.java.binaries=target/classes"
+        //         }
+        //         timeout(time: 10, unit: 'MINUTES') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
+        // }
 
         stage('Build') {
             steps {
@@ -22,6 +35,13 @@ pipeline {
                 script {
                     def jar = sh(script: "ls target/*.jar", returnStdout: true).trim()
                     sh "docker build -t sythe7/petclinic:${env.BUILD_ID} . --build-arg JAR_FILE=${jar}"
+                }
+            }
+        }
+
+        stage('Docker Image Push') {
+            steps {
+                script {
                     sh "docker login -u sythe7 -p abcdefghi"
                     sh "docker push sythe7/petclinic:${env.BUILD_ID}"
                 }
