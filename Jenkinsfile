@@ -30,7 +30,7 @@ pipeline {
             }
         }
         
-        stage('Docker Image Build and Push') {
+        stage('Docker Image Build') {
             steps {
                 script {
                     def jar = sh(script: "ls target/*.jar", returnStdout: true).trim()
