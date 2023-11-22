@@ -42,7 +42,7 @@ pipeline {
         stage('Docker Image Push') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPassword')]) {
+                    withCredentials([string(credentialsId: '84827f3c-43b9-4708-b767-e70f87e76e7b', variable: 'dockerHubPassword')]) {
                         sh "docker login -u sythe7 -p ${dockerHubPassword}"
                     }
                     sh "docker push sythe7/petclinic:${env.BUILD_ID}"
