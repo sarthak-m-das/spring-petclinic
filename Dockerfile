@@ -1,4 +1,6 @@
-FROM anapsix/alpine-java
-LABEL maintainer="sarthakd@andrew.cmu.edu"
-COPY /target/spring-petclinic-1.5.1.jar /home/spring-petclinic-1.5.1.jar
-CMD ["java","-jar","/home/spring-petclinic-1.5.1.jar", "--server.port=8000"]
+FROM openjdk:11-jre-slim
+WORKDIR /app
+ARG JAR_FILE
+COPY ${JAR_FILE} app.jar
+EXPOSE 8000
+ENTRYPOINT ["java", "-jar", "/app/app.jar", "--server.port=8000"]
